@@ -3,9 +3,9 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
-    [SerializeField] private LayerMask solidObjectsLayer;
     [SerializeField] private float xMapSize = 15;
     [SerializeField] private float yMapSize = 10;
+    [SerializeField] private LayerMask solidObjectsLayer;
     private Rigidbody2D rigidBody;
 
     void Start()

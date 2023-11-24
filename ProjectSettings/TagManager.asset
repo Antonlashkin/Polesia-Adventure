@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -11,7 +12,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Item
   - 'SolidObjects '
   - 
   - 
@@ -46,6 +47,9 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 1018913747
+    locked: 0
+  - name: UnderForeground
+    uniqueID: 3854768003
     locked: 0
   - name: Player
     uniqueID: 2749378393
