@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d9fc2848c9bf4489d3001edc900b25, type: 3}
+  m_Name: Apple
+  m_EditorClassIdentifier: 
+  itemTipe: 0
+  itemName: Apple
+  maximumAmount: 20
+  itemDiscription: 
+  itemPrefab: {fileID: 2847605648785369659, guid: 42b25975b28b5d943925ef84cd887e29, type: 3}
+  icon: {fileID: -2413806693520163455, guid: 233856fea8738c34bb2b949a589596b3, type: 3}
+  healAmount: 2
