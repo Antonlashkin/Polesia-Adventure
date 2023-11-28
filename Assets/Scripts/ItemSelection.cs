@@ -40,12 +40,21 @@ public class ItemSelection : MonoBehaviour
     {
         foreach (InventorySlot slot in inventory.GetComponent<InventoryManger>().slots)
         {
-            if (slot.item == _item && slot.amount + _amount <= _item.maximumAmount)
+            if (slot.item == _item)
             {
-                slot.amount += _amount;
-                slot.itemAmountText.text = slot.amount.ToString();
-                slot.isEmpty = false;
-                return true;
+                if (slot.amount + _amount <= _item.maximumAmount)
+                {
+                    slot.amount += _amount;
+                    slot.itemAmountText.text = slot.amount.ToString();
+                    slot.isEmpty = false;
+                    return true;
+                }
+                else if (slot.amount < _item.maximumAmount)
+                {
+                    _amount = slot.amount + _amount - _item.maximumAmount;
+                    slot.amount = _item.maximumAmount;
+                    slot.itemAmountText.text = slot.amount.ToString();
+                }
             }
             else if (slot.isEmpty)
             {

@@ -15,6 +15,7 @@ public class InventoryManger : MonoBehaviour
             slots.Add(inventoryPanel.GetChild(i).GetComponent<InventorySlot>());
         }
         backgroundPanel.SetActive(false);
+        inventoryPanel.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -28,6 +29,7 @@ public class InventoryManger : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 isOpenMenu = false;
+                Time.timeScale = 1;
             }
             else
             {
@@ -36,6 +38,7 @@ public class InventoryManger : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = true;
                 isOpenMenu = true;
+                Time.timeScale = 0;
             }
         }
     }
