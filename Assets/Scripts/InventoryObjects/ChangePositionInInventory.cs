@@ -2,19 +2,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-//using UnityEngine.UIElements;
 
 public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     bool _isDragging = false;
+    bool _isLeft = false;
     private GameObject lastSlot;
     private GameObject newSlot;
     private GameObject firstPanel;
     private GameObject secondPanel;
     private GameObject _dropedItem;
+    [SerializeField] GameObject person;
+
     private void Update()
     {
-        if (_isDragging)
+        if (_isDragging && _isLeft)
         {
             firstPanel.GetComponent<RectTransform>().position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, firstPanel.transform.position.z);
         }
@@ -22,7 +24,15 @@ public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPo
 
     public void OnPointerDown(PointerEventData pointdown)
     {
-        if (pointdown.pointerPressRaycast.gameObject.transform.parent.GetChild(0).GetComponent<Image>().sprite != null)
+        if (pointdown.button == PointerEventData.InputButton.Left)
+        {
+            _isLeft = true;
+        }
+        else
+        {
+            _isLeft = false;
+        }
+        if (pointdown.pointerPressRaycast.gameObject.transform.parent.GetChild(0).GetComponent<Image>().sprite != null && _isLeft)
         {
             firstPanel = pointdown.pointerPressRaycast.gameObject.transform.parent.gameObject;
             lastSlot = firstPanel.transform.parent.gameObject;
@@ -30,48 +40,72 @@ public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPo
             firstPanel.transform.SetParent(transform.parent.parent);
             firstPanel.GetComponentInChildren<Image>().raycastTarget = false;
         }
+        if (!_isLeft)
+        {
+            //menu
+        }
     }
 
     public void OnPointerUp(PointerEventData pointup)
     {
-        if (firstPanel == null)
+        if (_isLeft)
         {
-            return;
-        }
-        firstPanel.transform.position = lastSlot.transform.position;
-        firstPanel.transform.SetParent(lastSlot.transform);
-        //Debug.Log(secondPanel.name);
-        secondPanel = pointup.pointerCurrentRaycast.gameObject.transform.parent.gameObject;
-        if (secondPanel.name == "AssociationObject")
-        {
-            newSlot = secondPanel.transform.parent.gameObject;
-            if (secondPanel.transform.GetChild(0).GetComponent<Image>().sprite != null)
+            if (firstPanel == null)
             {
-                SwapItemsInInventory();
+                return;
+            }
+            firstPanel.transform.position = lastSlot.transform.position;
+            firstPanel.transform.SetParent(lastSlot.transform);
+            secondPanel = pointup.pointerCurrentRaycast.gameObject.transform.parent.gameObject;
+            GameObject inventoryPanel = pointup.pointerCurrentRaycast.gameObject;
+            if (secondPanel.name == "AssociationObject")
+            {
+                newSlot = secondPanel.transform.parent.gameObject;
+                if (secondPanel.transform.GetChild(0).GetComponent<Image>().sprite != null)
+                {
+                    //Add items in stack
+                    if (lastSlot.GetComponent<InventorySlot>().item.name == newSlot.GetComponent<InventorySlot>().item.name && int.Parse(secondPanel.transform.GetChild(1).GetComponent<TMP_Text>().text) != newSlot.GetComponent<InventorySlot>().item.maximumAmount)
+                    {
+                        if (lastSlot.GetComponent<InventorySlot>().amount + newSlot.GetComponent<InventorySlot>().amount > newSlot.GetComponent<InventorySlot>().item.maximumAmount)
+                        {
+                            lastSlot.GetComponent<InventorySlot>().amount -= newSlot.GetComponent<InventorySlot>().item.maximumAmount - newSlot.GetComponent<InventorySlot>().amount;
+                            firstPanel.transform.GetChild(1).GetComponent<TMP_Text>().text = (lastSlot.GetComponent<InventorySlot>().amount).ToString();
+                            newSlot.GetComponent<InventorySlot>().amount = newSlot.GetComponent<InventorySlot>().item.maximumAmount;
+                            secondPanel.transform.GetChild(1).GetComponent<TMP_Text>().text = (newSlot.GetComponent<InventorySlot>().amount).ToString();
+                        }
+                        else
+                        {
+                            newSlot.GetComponent<InventorySlot>().amount = newSlot.GetComponent<InventorySlot>().amount + lastSlot.GetComponent<InventorySlot>().amount;
+                            secondPanel.transform.GetChild(1).GetComponent<TMP_Text>().text = (newSlot.GetComponent<InventorySlot>().amount).ToString();
+                            DeleteItemFromInventory();
+                        }
+                        Debug.Log("Add");
+                    }
+                    else
+                    {
+                        SwapItemsInInventory();
+                    }
+                }
+                else
+                {
+                    RemoveItemInInventory();
+                }
+
+            }
+            else if (secondPanel.transform.parent != null || inventoryPanel.name == "InvrntoryPanel" || inventoryPanel.name == "QuickSlots")
+            {
+                firstPanel.GetComponentInChildren<Image>().raycastTarget = true;
+                _isDragging = false;
+                return;
             }
             else
             {
-                RemoveItemInInventory();
+                //Delete item from inventory
+                DropItemFromInventory();
             }
-            //newSlot = null;
-            //secondPanel = null;
-        }
-        else if(secondPanel.transform.parent != null)
-        {
             firstPanel.GetComponentInChildren<Image>().raycastTarget = true;
             _isDragging = false;
-            return;
         }
-        else
-        {
-            _dropedItem = Instantiate(lastSlot.GetComponent<InventorySlot>().item.itemPrefab);
-            _dropedItem.transform.position = new Vector3(0, 0, 0);
-            DropItemFromInventory();
-        }
-        firstPanel.GetComponentInChildren<Image>().raycastTarget = true;
-        _isDragging = false;
-        //lastSlot = null;
-        //firstPanel = null;
     }
 
 
@@ -86,28 +120,20 @@ public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPo
         lastSlot.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = textInLastSlot;
         newSlot.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = imageInNewSlot;
         newSlot.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = textInNewSlot;
-        Debug.Log("Swap");
     }
 
     private void RemoveItemInInventory()
     {
         SwapSlot();
-        //Sprite imageInNewSlot = firstPanel.transform.GetChild(0).GetComponent<Image>().sprite;
-        //Sprite imageInLastSlot = secondPanel.transform.GetChild(0).GetComponent<Image>().sprite;
-        //string textInNewSlot = firstPanel.transform.GetChild(1).GetComponent<TMP_Text>().text;
-        //string textInLastSlot = secondPanel.transform.GetChild(1).GetComponent<TMP_Text>().text;
-        //newSlot.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = imageInNewSlot;
-        //newSlot.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1);
-        //newSlot.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = textInNewSlot;
-        //lastSlot.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
-        //lastSlot.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = imageInLastSlot;
-        //lastSlot.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = textInLastSlot;
-        Debug.Log("Remove");
     }
 
     private void DropItemFromInventory()
     {
-        Debug.Log("Drop item");
+        _dropedItem = Instantiate(lastSlot.GetComponent<InventorySlot>().item.itemPrefab);
+        _dropedItem.GetComponent<Item>().amount = lastSlot.GetComponent<InventorySlot>().amount;
+        _dropedItem.transform.position = new Vector3(person.transform.position.x, person.transform.position.y, person.transform.position.z);
+
+        DeleteItemFromInventory();
     }
 
 
@@ -138,5 +164,15 @@ public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPo
         newSlot.GetComponent<InventorySlot>().isEmpty = swapSlot.isEmpty;
         newSlot.GetComponent<InventorySlot>().icon = swapSlot.icon;
         newSlot.GetComponent<InventorySlot>().itemAmountText = swapSlot.itemAmountText;
+    }
+
+    private void DeleteItemFromInventory()
+    {
+        lastSlot.GetComponent<InventorySlot>().amount = 0;
+        lastSlot.GetComponent<InventorySlot>().item = null;
+        lastSlot.GetComponent<InventorySlot>().isEmpty = true;
+        lastSlot.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        lastSlot.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = null;
+        lastSlot.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = "";
     }
 }
