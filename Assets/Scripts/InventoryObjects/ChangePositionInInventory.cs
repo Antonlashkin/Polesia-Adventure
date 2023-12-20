@@ -91,8 +91,40 @@ public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPo
                     RemoveItemInInventory();
                 }
 
+                if (lastSlot.name == "RightHand")
+                {
+                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(4).gameObject);
+                    if (lastSlot.transform.GetComponent<InventorySlot>().item != null)
+                    {
+                        ObjectInHand.AddItemInHand(person.transform.GetChild(4).gameObject, lastSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
+                    }
+                }
+                else if (lastSlot.name == "LeftHand")
+                {
+                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(5).gameObject);
+                    if (lastSlot.transform.GetComponent<InventorySlot>().item != null)
+                    {
+                        ObjectInHand.AddItemInHand(person.transform.GetChild(5).gameObject, lastSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
+                    }
+                }
+                if (newSlot.name == "RightHand")
+                {
+                    if (person.transform.GetChild(4).childCount != 0)
+                    {
+                        ObjectInHand.RemoveItemFromHand(person.transform.GetChild(4).gameObject);
+                    }
+                    ObjectInHand.AddItemInHand(person.transform.GetChild(4).gameObject, newSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
+                }
+                else if (newSlot.name == "LeftHand")
+                {
+                    if (person.transform.GetChild(5).childCount != 0)
+                    { 
+                        ObjectInHand.RemoveItemFromHand(person.transform.GetChild(5).gameObject);
+                    }
+                    ObjectInHand.AddItemInHand(person.transform.GetChild(5).gameObject, newSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
+                }
             }
-            else if (secondPanel.transform.parent != null || inventoryPanel.name == "InvrntoryPanel" || inventoryPanel.name == "QuickSlots")
+            else if (secondPanel.transform.parent != null || inventoryPanel.name == "InvrntoryPanel" || inventoryPanel.name == "QuickSlots" || inventoryPanel.name == "Hands")
             {
                 firstPanel.GetComponentInChildren<Image>().raycastTarget = true;
                 _isDragging = false;
@@ -100,9 +132,21 @@ public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPo
             }
             else
             {
+                if (lastSlot.name == "RightHand")
+                {
+                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(4).gameObject);
+                }
+                else if (lastSlot.name == "LeftHand")
+                {
+                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(5).gameObject);
+                }
                 //Delete item from inventory
+                firstPanel.GetComponentInChildren<Image>().raycastTarget = true;
+                _isDragging = false;
                 DropItemFromInventory();
             }
+
+
             firstPanel.GetComponentInChildren<Image>().raycastTarget = true;
             _isDragging = false;
         }
