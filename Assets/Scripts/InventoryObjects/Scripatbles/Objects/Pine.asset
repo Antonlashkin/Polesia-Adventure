@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8201b28a9d5fbf240a985a31ff0fe57f, type: 3}
   m_Name: Pine
   m_EditorClassIdentifier: 
-  stateAmount: 100
-  DropedItemPrefab: {fileID: 0}
+  maxStateAmount: 0
+  DropedItemPrefab: {fileID: 8674374501792006979, guid: 64eea00374fc6604380d901809edcda7, type: 3}
   itemToDestroy: Axe

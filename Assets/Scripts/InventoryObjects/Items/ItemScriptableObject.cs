@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum ItemTipe
@@ -7,7 +5,8 @@ public enum ItemTipe
     Default,
     Food,
     Weapon,
-    Instrument
+    Instrument,
+    Component
 }
 
 public class ItemScriptableObject : ScriptableObject
