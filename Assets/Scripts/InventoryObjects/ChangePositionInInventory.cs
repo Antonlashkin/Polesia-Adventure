@@ -124,7 +124,7 @@ public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPo
                     ObjectInHand.AddItemInHand(person.transform.GetChild(5).gameObject, newSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
                 }
             }
-            else if (secondPanel.transform.parent != null || inventoryPanel.name == "InvrntoryPanel" || inventoryPanel.name == "QuickSlots" || inventoryPanel.name == "Hands")
+            else if (secondPanel.transform.parent.name != "Canvas" || inventoryPanel.name == "InvrntoryPanel" || inventoryPanel.name == "QuickSlots" || inventoryPanel.name == "Hands")
             {
                 firstPanel.GetComponentInChildren<Image>().raycastTarget = true;
                 _isDragging = false;
