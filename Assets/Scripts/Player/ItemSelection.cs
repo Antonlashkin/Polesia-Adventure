@@ -7,8 +7,7 @@ public class ItemSelection : MonoBehaviour
     [SerializeField] private GameObject Text;
     [SerializeField] private LayerMask Item;
     [SerializeField] GameObject inventory;
-
-    // Update is called once per frame
+    
     void Update()
     {
         Collider2D collision = Physics2D.OverlapBox(transform.position, new Vector2(4, 4), 0, Item);
