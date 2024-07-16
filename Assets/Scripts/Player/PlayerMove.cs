@@ -21,12 +21,6 @@ public class PlayerMove : MonoBehaviour
         Vector2 movement = new Vector2 (deltaX, deltaY);
         movement = Vector2.ClampMagnitude(movement, speed);
         
-        //Vector2 point = new Vector2(transform.position.x + movement.x, transform.position.y + movement.y);
-        
-        // if (Physics2D.OverlapBox(point, new Vector2(0.95f, 1.9f), 0f, solidObjectsLayer) == null)
-        // {
-        // }
-        
         if (transform.position.x > xMapSize && movement.x > 0)
         {
             movement.x = 0;
@@ -46,7 +40,5 @@ public class PlayerMove : MonoBehaviour
         }
         
         rigidBody.velocity = movement;
-        Debug.Log(rigidBody.velocity);
-        //transform.Translate(movement);
     }
 }

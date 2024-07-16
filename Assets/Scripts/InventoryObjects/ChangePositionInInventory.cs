@@ -93,35 +93,35 @@ public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPo
 
                 if (lastSlot.name == "RightHand")
                 {
-                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(4).gameObject);
+                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(2).gameObject);
                     if (lastSlot.transform.GetComponent<InventorySlot>().item != null)
                     {
-                        ObjectInHand.AddItemInHand(person.transform.GetChild(4).gameObject, lastSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
+                        ObjectInHand.AddItemInHand(person.transform.GetChild(2).gameObject, lastSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
                     }
                 }
                 else if (lastSlot.name == "LeftHand")
                 {
-                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(5).gameObject);
+                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(3).gameObject);
                     if (lastSlot.transform.GetComponent<InventorySlot>().item != null)
                     {
-                        ObjectInHand.AddItemInHand(person.transform.GetChild(5).gameObject, lastSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
+                        ObjectInHand.AddItemInHand(person.transform.GetChild(3).gameObject, lastSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
                     }
                 }
                 if (newSlot.name == "RightHand")
                 {
-                    if (person.transform.GetChild(4).childCount != 0)
+                    if (person.transform.GetChild(2).childCount != 0)
                     {
-                        ObjectInHand.RemoveItemFromHand(person.transform.GetChild(4).gameObject);
+                        ObjectInHand.RemoveItemFromHand(person.transform.GetChild(2).gameObject);
                     }
-                    ObjectInHand.AddItemInHand(person.transform.GetChild(4).gameObject, newSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
+                    ObjectInHand.AddItemInHand(person.transform.GetChild(2).gameObject, newSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
                 }
                 else if (newSlot.name == "LeftHand")
                 {
-                    if (person.transform.GetChild(5).childCount != 0)
+                    if (person.transform.GetChild(3).childCount != 0)
                     { 
-                        ObjectInHand.RemoveItemFromHand(person.transform.GetChild(5).gameObject);
+                        ObjectInHand.RemoveItemFromHand(person.transform.GetChild(3).gameObject);
                     }
-                    ObjectInHand.AddItemInHand(person.transform.GetChild(5).gameObject, newSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
+                    ObjectInHand.AddItemInHand(person.transform.GetChild(3).gameObject, newSlot.gameObject.GetComponent<InventorySlot>().item.itemPrefab);
                 }
             }
             else if (secondPanel.transform.parent.name != "Canvas" || inventoryPanel.name == "InvrntoryPanel" || inventoryPanel.name == "QuickSlots" || inventoryPanel.name == "Hands")
@@ -134,11 +134,11 @@ public class ChangePositionInInventory : MonoBehaviour, IPointerDownHandler, IPo
             {
                 if (lastSlot.name == "RightHand")
                 {
-                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(4).gameObject);
+                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(2).gameObject);
                 }
                 else if (lastSlot.name == "LeftHand")
                 {
-                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(5).gameObject);
+                    ObjectInHand.RemoveItemFromHand(person.transform.GetChild(3).gameObject);
                 }
                 //Delete item from inventory
                 firstPanel.GetComponentInChildren<Image>().raycastTarget = true;

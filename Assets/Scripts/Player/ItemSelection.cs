@@ -31,40 +31,39 @@ public class ItemSelection : MonoBehaviour
         {
             Text.SetActive(false);
         }
-        
     }
-
-
-    private bool AddItem(ItemScriptableObject _item, int _amount)
-    {
-        foreach (InventorySlot slot in inventory.GetComponent<InventoryManger>().slots)
-        {
-            if (slot.item == _item)
-            {
-                if (slot.amount + _amount <= _item.maximumAmount)
-                {
-                    slot.amount += _amount;
-                    slot.itemAmountText.text = slot.amount.ToString();
-                    slot.isEmpty = false;
-                    return true;
-                }
-                else if (slot.amount < _item.maximumAmount)
-                {
-                    _amount = slot.amount + _amount - _item.maximumAmount;
-                    slot.amount = _item.maximumAmount;
-                    slot.itemAmountText.text = slot.amount.ToString();
-                }
-            }
-            else if (slot.isEmpty)
-            {
-                slot.item = _item;
-                slot.amount = _amount;
-                slot.SetIcon(_item.icon);
-                slot.itemAmountText.text = slot.amount.ToString(); 
-                slot.isEmpty = false;
-                return true;
-            }
-        }
-        return false;
-    }
+   
+   
+       private bool AddItem(ItemScriptableObject _item, int _amount)
+       {
+           foreach (InventorySlot slot in inventory.GetComponent<InventoryManger>().slots)
+           {
+               if (slot.item == _item)
+               {
+                   if (slot.amount + _amount <= _item.maximumAmount)
+                   {
+                       slot.amount += _amount;
+                       slot.itemAmountText.text = slot.amount.ToString();
+                       slot.isEmpty = false;
+                       return true;
+                   }
+                   else if (slot.amount < _item.maximumAmount)
+                   {
+                       _amount = slot.amount + _amount - _item.maximumAmount;
+                       slot.amount = _item.maximumAmount;
+                       slot.itemAmountText.text = slot.amount.ToString();
+                   }
+               }
+               else if (slot.isEmpty)
+               {
+                   slot.item = _item;
+                   slot.amount = _amount;
+                   slot.SetIcon(_item.icon);
+                   slot.itemAmountText.text = slot.amount.ToString(); 
+                   slot.isEmpty = false;
+                   return true;
+               }
+           }
+           return false;
+       }
 }

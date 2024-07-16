@@ -8,7 +8,7 @@ public class DestroyObject : MonoBehaviour
 
     void Update()
     {
-        Collider2D collision = Physics2D.OverlapBox(transform.position, new Vector2(2, 2), 0, SolidObject); //add massive
+        Collider2D collision = Physics2D.OverlapBox(transform.position, new Vector2(5, 5), 0, SolidObject); //add massive
         if (collision != null)
         {
             //Debug.Log(collision.gameObject.name);
@@ -16,15 +16,16 @@ public class DestroyObject : MonoBehaviour
             {
                 string itemInRightHand = "";
                 string itemInLeftHand = "";
-                if (transform.parent.GetChild(4).childCount != 0)
+                if (transform.parent.GetChild(2).childCount != 0)
                 {
-                    itemInRightHand = transform.parent.GetChild(4).GetChild(0).name;
+                    itemInRightHand = transform.parent.GetChild(2).GetChild(0).name;
                 }
-                if (transform.parent.GetChild(5).childCount != 0)
+                if (transform.parent.GetChild(3).childCount != 0)
                 {
-                    itemInLeftHand = transform.parent.GetChild(5).GetChild(0).name;
+                    itemInLeftHand = transform.parent.GetChild(3).GetChild(0).name;
                 }
-                if (itemInRightHand.Contains(collision.gameObject.GetComponent<DestroyableObject>().destroyObject.itemToDestroy) || itemInLeftHand.Contains(collision.gameObject.GetComponent<DestroyableObject>().destroyObject.itemToDestroy))
+                if (itemInRightHand.Contains(collision.gameObject.GetComponent<DestroyableObject>().destroyObject.itemToDestroy)
+                    || itemInLeftHand.Contains(collision.gameObject.GetComponent<DestroyableObject>().destroyObject.itemToDestroy))
                 {
                     collision.gameObject.GetComponent<DestroyableObject>().stateAmount -= power;
                     collision.gameObject.transform.localScale = new Vector3(collision.gameObject.transform.localScale.x - 0.1f, collision.gameObject.transform.localScale.y - 0.1f, collision.gameObject.transform.localScale.z - 0.1f);
